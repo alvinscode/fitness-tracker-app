@@ -33,6 +33,8 @@ def main():
             list_all_users()
             log_in()
             break
+        elif choice == 4:
+            break
         else:
             click.echo("Please select a valid option.")
 
@@ -56,6 +58,7 @@ def log_in():
         user_submenu(username)
     else:
         click.echo("Invalid username.")
+        log_in()
 
 def list_all_users():
     tracker = FitnessTracker(db)
