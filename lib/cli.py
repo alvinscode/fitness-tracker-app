@@ -44,18 +44,27 @@ def print_menu():
         click.echo(menu_content)
 
 def add_user():
-    tracker = FitnessTracker(db)
-    username = click.prompt("Enter username")
-    tracker.add_user(username)
-    click.echo(f"Profile {username} was created.")
+    while True:
+        clear_console()
+        username = click.prompt("Enter username (Enter 'back' to return to main menu)")
+
+        if username.lower() == 'back':
+            main()
+        else:
+            tracker = FitnessTracker(db)
+            tracker.add_user(username)
+            click.echo(f"Profile {username} was created.")
 
 def log_in():
     tracker = FitnessTracker(db)
-    username = click.prompt("Enter username")
+    username = click.prompt("Enter username (Enter 'back' to return to main menu)")
+
     user_id = tracker.get_user_id(username)
 
     if user_id is not None:
         user_submenu(username)
+    elif user_id.lower() == 'back':
+        main()
     else:
         click.echo("Invalid username.")
         log_in()
@@ -76,24 +85,36 @@ def user_submenu(username):
         choice = click.prompt("Select an option", type=int)
 
         if choice == 1:
-            option1(username)
+            add_workout(username)
             break
         elif choice == 2:
-            option2(username)
+            list_workouts(username)
             break
         else:
             click.echo("Please select a valid option.")
 
 def print_user_submenu(username):
     click.echo(f"Welcome, {username}.")
-    click.echo("1. Option 1")
-    click.echo("2. Option 2")
+    click.echo("1. Add Workout")
+    click.echo("2. List All Workouts")
 
-def option1(username):
-    click.echo(f"{username} selected Option 1.")
+def add_workout(username):
+    clear_console()
+    date = click.prompt("Enter workout date (YYYY-MM-DD)")
 
-def option2(username):
-    click.echo(f"{username} selected Option 2.")
+    tracker = FitnessTracker(db)
+    tracker.add_workout(username, date)
+
+def list_workouts(username):
+    tracker = FitnessTracker(db)
+    workouts = tracker.list_workouts(username)
+    
+    if workouts:
+        click.echo(f"Workouts for {username}:")
+        for workout in workouts:
+            click.echo(workout)
+    else:
+        click.echo(f"No workouts found for {username}.")
 
 if __name__ == '__main__':
     main()
