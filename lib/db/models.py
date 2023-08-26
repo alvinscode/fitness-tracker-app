@@ -8,6 +8,7 @@ class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     username = Column(String, nullable=False)
+    workouts = relationship('Workout', back_populates='user')
 
 class Workout(Base):
     __tablename__ = 'workouts'
