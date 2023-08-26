@@ -15,6 +15,7 @@ class Workout(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     date = Column(String, nullable=False)
+    time = Column(String)
     user = relationship('User', back_populates='workouts')
 
 class Exercise(Base):
