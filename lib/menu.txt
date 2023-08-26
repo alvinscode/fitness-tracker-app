@@ -15,3 +15,4 @@ U| |_  u  |_"_|     | | <|  \| |> |  _|"<\___ \<\___ \/
 Main Menu
 1. Create Profile
 2. Log In
+3. List All Available Profiles
