@@ -197,6 +197,7 @@ def select_workout_date(username):
         select_workout_date(username)
 
 def list_workouts_submenu(username):
+    clear_console()
     tracker = Workout(db)
     workouts = tracker.list_workouts(username)
     
@@ -207,17 +208,17 @@ def list_workouts_submenu(username):
         exercisetracker = Exercise(db)
         total_week_time = datetime.timedelta()
         total_week_weight = 0
+        last_day_total_reps = None
+        last_day_total_weight = None
 
-        last_day_avg_reps = None
-
-        for workout in workouts:
+        for idx, workout in enumerate(workouts):
             workout_id = workout[0]
             workout_date = datetime.datetime.strptime(workout[1], '%Y-%m-%d')
             days_since_workout = (datetime.datetime.now() - workout_date).days
 
             if days_since_workout <= 7:
                 exercises = exercisetracker.get_all_exercises_for_workout(workout_id)
-                total_reps = sum(exercise['reps'] for exercise in exercises)
+                total_reps = sum(exercise['reps'] * exercise['sets'] for exercise in exercises)
                 average_reps = total_reps / len(exercises) if len(exercises) > 0 else 0
                 total_weight = sum(exercise['weight'] for exercise in exercises)
 
@@ -226,6 +227,7 @@ def list_workouts_submenu(username):
                     click.echo("Exercises:")
                     for exercise in exercises:
                         click.echo(f"- {exercise['name']} - Sets: {exercise['sets']}, Reps: {exercise['reps']}, Weight: {exercise['weight']}")
+
                     click.echo(f"Total Reps: {total_reps} | Average Reps: {average_reps:.2f}")
                     click.echo(f"Total Weight Lifted: {total_weight}")
 
@@ -236,10 +238,16 @@ def list_workouts_submenu(username):
                     total_week_time += total_time
                     total_week_weight += total_weight
 
-                    if last_day_avg_reps is not None:
-                        avg_improvement = ((average_reps - last_day_avg_reps) / last_day_avg_reps) * 100
-                        click.echo(f"Average Reps Improvement: {avg_improvement:.2f}%")
-                    last_day_avg_reps = average_reps
+                    if idx > 0 and last_day_total_reps is not None:
+                        daily_reps_improvement = ((total_reps - last_day_total_reps) / last_day_total_reps) * 100
+                        click.echo(f"Daily Reps Improvement: {daily_reps_improvement:.2f}%")
+
+                    if idx > 0 and last_day_total_weight is not None and last_day_total_weight != 0:
+                        daily_weight_improvement = ((total_weight - last_day_total_weight) / last_day_total_weight) * 100
+                        click.echo(f"Daily Weight Improvement: {daily_weight_improvement:.2f}%")
+
+                    last_day_total_reps = total_reps
+                    last_day_total_weight = total_weight
 
         click.echo(f"Total Time for the Week: {total_week_time}")
         click.echo(f"Total Weight Lifted for the Week: {total_week_weight}")
