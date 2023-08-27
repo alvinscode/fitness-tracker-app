@@ -299,7 +299,7 @@ def delete_workouts_submenu(username):
                 click.echo("Deletion was cancelled.")
                 break
         else:
-            click.echo("Invalid input.")
+            click.echo("Please select a valid option.")
 
     user_submenu(username)
 
@@ -359,9 +359,17 @@ def add_exercise_submenu(username, workout_date):
             exercises_menu(username, workout_date)
             return
 
-        sets = click.prompt("Enter number of sets", type=int)
-        reps = click.prompt("Enter number of reps", type=int)
-        weight = click.prompt("Enter weight", type=int)
+        sets = click.prompt("Enter number of sets (Enter '-1' to go back)", type=int)
+        if sets == -1:
+            exercises_menu(username, workout_date)
+
+        reps = click.prompt("Enter number of reps (Enter '-1' to go back)", type=int)
+        if reps == -1:
+            exercise_name(username, workout_date)
+
+        weight = click.prompt("Enter weight (Enter '-1' to go back)", type=int)
+        if weight == -1:
+            exercise_name(username, workout_date)
 
         exercise_tracker = Exercise(db)
         exercise_tracker.add_exercise(workout_id, exercise_name, sets, reps, weight)
