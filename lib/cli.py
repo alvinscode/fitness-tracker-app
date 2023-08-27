@@ -122,6 +122,10 @@ def user_submenu(username):
             click.echo("Please select a valid option.")
 
 def print_user_submenu(username):
+    with open("menu.txt", "r") as menu_file:
+        menu_content = menu_file.read()
+        click.echo(menu_content)
+    click.echo()
     click.echo(f"Welcome, {username}.")
     click.echo()
     click.echo("1. Add Workout")
