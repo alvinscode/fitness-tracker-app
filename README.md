@@ -75,6 +75,20 @@ To use the CLI, navigate to the project directory, then run these commands:
 
 - [ASCII Art Generator that is used in the menus.](https://patorjk.com/software/taag/)
 
+## Contributor's Guide
+
+Fork the repository on GitHub.
+
+Write tests that demonstrate your bug or feature. Ensure that they fail.
+
+Run the tests to confirm they all pass on your system. If they don’t, you’ll need to investigate why they fail.
+
+Make your change.
+
+Run the tests again, confirming that all tests pass including the ones you just added.
+
+Send a GitHub Pull Request to the main repository’s main branch. GitHub Pull Requests are the expected method of code collaboration on this project.
+
 ## Conclusion
 
 The Fitness Tracker CLI provides an easy and convenient way to track your workout sessions 
