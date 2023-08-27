@@ -307,7 +307,7 @@ def delete_user_submenu(username):
         click.echo("Deletion was cancelled.")
     
     input("Press Enter to continue...")
-    user_submenu(username)
+    main()
 
 def exercises_menu(username, workout_date):
     clear_console()
