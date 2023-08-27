@@ -1,5 +1,4 @@
 import sqlite3
-import click
 from datetime import datetime
 from user import User
 
