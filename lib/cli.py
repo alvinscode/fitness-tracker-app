@@ -177,7 +177,7 @@ def select_workout_date(username):
     click.echo("Select a workout date:")
     click.echo()
     for idx, workout in enumerate(workouts, start=1):
-        click.echo(f"{idx}. {workout[1]} - {workout[2]}")
+        click.echo(f"{idx}. Workout on {workout[1]} for {workout[2]}")
     click.echo()
     
     choice = click.prompt("Enter the number of the date you wish to select (Enter '0' to cancel)", type=int)
@@ -269,7 +269,7 @@ def exercises_menu(username, workout_date):
         choice = click.prompt("Select an option", type=int)
     
         if choice == 1:
-            add_exercise_submenu(username, workout_date)  # Option for adding an exercise
+            add_exercise_submenu(username, workout_date)
             break
         elif choice == 2:
             view_exercises(username, workout_date)

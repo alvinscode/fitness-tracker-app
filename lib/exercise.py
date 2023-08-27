@@ -32,22 +32,8 @@ class Exercise:
 
         return exercises
     
-    def get_workout_id(self, username, workout_date):
-        query = """
-            SELECT id
-            FROM workouts
-            WHERE user_id = ? AND date = ?
-        """
-        user_id = self.user.get_user_id(username)
-
-        if user_id is None:
-            return None
-
-        values = (user_id, workout_date)
-        self.cursor.execute(query, values)
-        workout_id = self.cursor.fetchone()
-
-        if workout_id:
-            return workout_id[0]
-        else:
-            return None
+    def get_exercise_by_id(self, exercise_id):
+        query = "SELECT * FROM exercises WHERE id = ?"
+        self.cursor.execute(query, (exercise_id,))
+        exercise = self.cursor.fetchone()
+        return exercise
