@@ -152,6 +152,12 @@ def add_workout_submenu(username):
             input("Press Enter to continue...")
             user_submenu(username)
             break
+        
+        try:
+            workout_time = datetime.datetime.strptime(time, '%H:%M')
+        except ValueError:
+            click.echo("Invalid time format. Use HH:MM format.")
+            continue
 
         tracker = Workout(db)
         if not tracker.is_valid_date(date):
