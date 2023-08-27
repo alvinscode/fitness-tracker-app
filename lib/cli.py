@@ -337,7 +337,7 @@ def exercises_menu(username, workout_date):
             click.echo("Please select a valid option.")
 
 def print_exercises_menu(username, workout_date):
-    click.echo(f"Exercises for {username} on {workout_date}:")
+    click.echo(f"Would you like to add or change exercises to your workout on {workout_date}, {username}?:")
     click.echo()
     click.echo("1. Add Exercise")
     click.echo("2. View Exercises")
