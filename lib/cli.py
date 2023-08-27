@@ -1,6 +1,7 @@
 import click
 import os
 import platform
+import datetime
 from user import User
 from workout import Workout
 from exercise import Exercise
@@ -122,10 +123,10 @@ def user_submenu(username):
 def print_user_submenu(username):
     click.echo(f"Welcome, {username}.")
     click.echo()
-    click.echo("1. Add Workout Date")
-    click.echo("2. View Workout Dates")
-    click.echo("3. Select Workout Date")
-    click.echo("4. Delete Workout Date")
+    click.echo("1. Add Workout")
+    click.echo("2. View Workouts")
+    click.echo("3. Select Workout")
+    click.echo("4. Delete Workout")
     click.echo("5. Delete Profile")
     click.echo("6. Log Out (Return to Main Menu)")
     click.echo()
@@ -204,19 +205,35 @@ def list_workouts_submenu(username):
         click.echo()
 
         exercisetracker = Exercise(db)
+        total_week_time = datetime.timedelta()
 
         for workout in workouts:
             workout_id = workout[0]
-            exercises = exercisetracker.get_all_exercises_for_workout(workout_id)
+            workout_date = datetime.datetime.strptime(workout[1], '%Y-%m-%d')
+            week_start = workout_date - datetime.timedelta(days=workout_date.weekday())
+            week_end = week_start + datetime.timedelta(days=6)
+            
+            if week_start <= workout_date <= week_end:
+                exercises = exercisetracker.get_all_exercises_for_workout(workout_id)
+                total_reps = sum(exercise['reps'] for exercise in exercises)
+                average_reps = total_reps / len(exercises) if len(exercises) > 0 else 0
 
-            click.echo(f"Date: {workout[1]} | Time: {workout[2]}")
-            if exercises:
-                click.echo("Exercises:")
-                for exercise in exercises:
-                    click.echo(f"- {exercise['name']} - Sets: {exercise['sets']}, Reps: {exercise['reps']}, Weight: {exercise['weight']}")
-            else:
-                click.echo("No exercises found for this workout.")
-            click.echo()
+                click.echo(f"Date: {workout[1]} | Time: {workout[2]}")
+                if exercises:
+                    click.echo("Exercises:")
+                    for exercise in exercises:
+                        click.echo(f"- {exercise['name']} - Sets: {exercise['sets']}, Reps: {exercise['reps']}, Weight: {exercise['weight']}")
+                    click.echo(f"Total Reps: {total_reps} | Average Reps: {average_reps:.2f}")
+                else:
+                    click.echo("No exercises found for this workout.")
+                
+                workout_time = datetime.datetime.strptime(workout[2], '%H:%M')
+                total_time = datetime.timedelta(hours=workout_time.hour, minutes=workout_time.minute)
+                click.echo()
+
+                total_week_time += total_time
+
+        click.echo(f"Total Time for the Week: {total_week_time}")
     else:
         click.echo(f"No workouts found for {username}.")
 
