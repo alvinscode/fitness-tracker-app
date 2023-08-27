@@ -206,6 +206,7 @@ def list_workouts_submenu(username):
 
         exercisetracker = Exercise(db)
         total_week_time = datetime.timedelta()
+        total_week_weight = 0
 
         for workout in workouts:
             workout_id = workout[0]
@@ -217,6 +218,7 @@ def list_workouts_submenu(username):
                 exercises = exercisetracker.get_all_exercises_for_workout(workout_id)
                 total_reps = sum(exercise['reps'] for exercise in exercises)
                 average_reps = total_reps / len(exercises) if len(exercises) > 0 else 0
+                total_weight = sum(exercise['weight'] for exercise in exercises)
 
                 click.echo(f"Date: {workout[1]} | Time: {workout[2]}")
                 if exercises:
@@ -224,6 +226,7 @@ def list_workouts_submenu(username):
                     for exercise in exercises:
                         click.echo(f"- {exercise['name']} - Sets: {exercise['sets']}, Reps: {exercise['reps']}, Weight: {exercise['weight']}")
                     click.echo(f"Total Reps: {total_reps} | Average Reps: {average_reps:.2f}")
+                    click.echo(f"Total Weight Lifted: {total_weight}")
                 else:
                     click.echo("No exercises found for this workout.")
                 
@@ -232,8 +235,10 @@ def list_workouts_submenu(username):
                 click.echo()
 
                 total_week_time += total_time
+                total_week_weight += total_weight
 
         click.echo(f"Total Time for the Week: {total_week_time}")
+        click.echo(f"Total Weight Lifted for the Week: {total_week_weight}")
     else:
         click.echo(f"No workouts found for {username}.")
 
