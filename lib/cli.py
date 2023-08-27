@@ -222,7 +222,7 @@ def list_workouts_submenu(username):
                 total_weight = sum(exercise['weight'] for exercise in exercises)
 
                 if exercises:
-                    click.echo(f"Date: {workout[1]} | Time: {workout[2]}")
+                    click.echo(f"Date: {workout[1]} | Total Workout Time: {workout[2]}")
                     click.echo("Exercises:")
                     for exercise in exercises:
                         click.echo(f"- {exercise['name']} - Sets: {exercise['sets']}, Reps: {exercise['reps']}, Weight: {exercise['weight']}")
@@ -263,7 +263,7 @@ def delete_workouts_submenu(username):
     
         click.echo("Workouts:")
         for idx, workout in enumerate(workouts, start=1):
-            click.echo(f"{idx}. {workout}")
+            click.echo(f"{idx}. Date: {workout[1]} | Total Workout Time: {workout[2]}")
 
         choice = click.prompt("Select a workout to delete (Enter '0' to cancel deletion)", type=int)
         if choice == 0:
@@ -273,11 +273,11 @@ def delete_workouts_submenu(username):
             workout_to_delete = workouts[choice - 1]
             workout_id = tracker.get_workout_id(username, workout_to_delete[1])
 
-            confirmed = click.confirm(f"Are you sure you want to delete this workout: '{workout_to_delete}'?")
+            confirmed = click.confirm(f"Are you sure you want to delete this workout: '{workout_to_delete[1]} - {workout_to_delete[2]}'?")
 
             if confirmed:
                 tracker.delete_workout(workout_id)
-                click.echo(f"Workout: {workout_to_delete} has been deleted.")
+                click.echo(f"Workout: {workout_to_delete[1]} - {workout_to_delete[2]} has been deleted.")
                 break
             else:
                 click.echo("Deletion was cancelled.")
