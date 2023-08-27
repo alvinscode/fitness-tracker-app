@@ -202,8 +202,21 @@ def list_workouts_submenu(username):
     if workouts:
         click.echo(f"Workouts for {username}:")
         click.echo()
+
+        exercisetracker = Exercise(db)
+
         for workout in workouts:
-            click.echo(workout)
+            workout_id = workout[0]
+            exercises = exercisetracker.get_all_exercises_for_workout(workout_id)
+
+            click.echo(f"Date: {workout[1]} | Time: {workout[2]}")
+            if exercises:
+                click.echo("Exercises:")
+                for exercise in exercises:
+                    click.echo(f"- {exercise['name']} - Sets: {exercise['sets']}, Reps: {exercise['reps']}, Weight: {exercise['weight']}")
+            else:
+                click.echo("No exercises found for this workout.")
+            click.echo()
     else:
         click.echo(f"No workouts found for {username}.")
 
@@ -384,7 +397,7 @@ def delete_exercise_menu(username, workout_date):
             click.echo(f"Exercise '{exercise_to_delete['name']}' has been deleted.")
         else:
             click.echo("Exercise deletion was cancelled.")
-            
+
         exercisetracker.conn.close()
     else:
         click.echo("Invalid input.")
