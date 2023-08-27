@@ -8,7 +8,7 @@ the progress of workouts throughout time.
 
 ## cli.py
 
-`cli.py` is the main entry point of the Fitness Tracker CKU application. It
+`cli.py` is the main entry point of the Fitness Tracker CLI application. It
 will provide the user with a user-friendly menu system. From here, a user
 will be able to create profiles, log in, add workouts, view workout details,
 and manage exercises for those workouts.
@@ -74,3 +74,9 @@ To use the CLI, navigate to the project directory, then run these commands:
 ## Resources
 
 - [ASCII Art Generator that is used in the menus.](https://patorjk.com/software/taag/)
+
+## Conclusion
+
+The Fitness Tracker CLI provides an easy and convenient way to track your workout sessions 
+and exercises. Whether you're a fitness enthusiast or simply looking to stay organized, 
+this CLI offers a range of features to help you achieve your fitness goals.
