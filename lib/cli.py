@@ -208,37 +208,42 @@ def list_workouts_submenu(username):
         total_week_time = datetime.timedelta()
         total_week_weight = 0
 
+        last_day_avg_reps = None
+
         for workout in workouts:
             workout_id = workout[0]
             workout_date = datetime.datetime.strptime(workout[1], '%Y-%m-%d')
-            week_start = workout_date - datetime.timedelta(days=workout_date.weekday())
-            week_end = week_start + datetime.timedelta(days=6)
-            
-            if week_start <= workout_date <= week_end:
+            days_since_workout = (datetime.datetime.now() - workout_date).days
+
+            if days_since_workout <= 7:
                 exercises = exercisetracker.get_all_exercises_for_workout(workout_id)
                 total_reps = sum(exercise['reps'] for exercise in exercises)
                 average_reps = total_reps / len(exercises) if len(exercises) > 0 else 0
                 total_weight = sum(exercise['weight'] for exercise in exercises)
 
-                click.echo(f"Date: {workout[1]} | Time: {workout[2]}")
                 if exercises:
+                    click.echo(f"Date: {workout[1]} | Time: {workout[2]}")
                     click.echo("Exercises:")
                     for exercise in exercises:
                         click.echo(f"- {exercise['name']} - Sets: {exercise['sets']}, Reps: {exercise['reps']}, Weight: {exercise['weight']}")
                     click.echo(f"Total Reps: {total_reps} | Average Reps: {average_reps:.2f}")
                     click.echo(f"Total Weight Lifted: {total_weight}")
-                else:
-                    click.echo("No exercises found for this workout.")
-                
-                workout_time = datetime.datetime.strptime(workout[2], '%H:%M')
-                total_time = datetime.timedelta(hours=workout_time.hour, minutes=workout_time.minute)
-                click.echo()
 
-                total_week_time += total_time
-                total_week_weight += total_weight
+                    workout_time = datetime.datetime.strptime(workout[2], '%H:%M')
+                    total_time = datetime.timedelta(hours=workout_time.hour, minutes=workout_time.minute)
+                    click.echo()
+
+                    total_week_time += total_time
+                    total_week_weight += total_weight
+
+                    if last_day_avg_reps is not None:
+                        avg_improvement = ((average_reps - last_day_avg_reps) / last_day_avg_reps) * 100
+                        click.echo(f"Average Reps Improvement: {avg_improvement:.2f}%")
+                    last_day_avg_reps = average_reps
 
         click.echo(f"Total Time for the Week: {total_week_time}")
         click.echo(f"Total Weight Lifted for the Week: {total_week_weight}")
+
     else:
         click.echo(f"No workouts found for {username}.")
 
