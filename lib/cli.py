@@ -45,6 +45,7 @@ def print_menu():
     with open("menu.txt", "r") as menu_file:
         menu_content = menu_file.read()
         click.echo(menu_content)
+        click.echo()
         click.echo("Main Menu")
         click.echo()
         click.echo("1. Create Profile")
