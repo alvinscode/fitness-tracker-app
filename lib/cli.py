@@ -237,10 +237,10 @@ def list_workouts_submenu(username):
                     click.echo(f"Date: {workout[1]} | Total Workout Time: {workout[2]}")
                     click.echo("Exercises:")
                     for exercise in exercises:
-                        click.echo(f"- {exercise['name']} - Sets: {exercise['sets']}, Reps: {exercise['reps']}, Weight: {exercise['weight']}")
+                        click.echo(f"- {exercise['name']} - Sets: {exercise['sets']}, Reps: {exercise['reps']}, Weight: {exercise['weight']} lbs")
 
                     click.echo(f"Total Reps: {total_reps} | Average Reps: {average_reps:.2f}")
-                    click.echo(f"Total Weight Lifted: {total_weight}")
+                    click.echo(f"Total Weight Lifted: {total_weight} lbs.")
 
                     workout_time = datetime.datetime.strptime(workout[2], '%H:%M')
                     total_time = datetime.timedelta(hours=workout_time.hour, minutes=workout_time.minute)
@@ -261,7 +261,7 @@ def list_workouts_submenu(username):
                     last_day_total_weight = total_weight
 
         click.echo(f"Total Time for the Week: {total_week_time}")
-        click.echo(f"Total Weight Lifted for the Week: {total_week_weight}")
+        click.echo(f"Total Weight Lifted for the Week: {total_week_weight} lbs.")
 
     else:
         click.echo(f"No workouts found for {username}.")
