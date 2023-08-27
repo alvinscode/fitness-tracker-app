@@ -333,6 +333,8 @@ def exercises_menu(username, workout_date):
             delete_exercise_menu(username, workout_date)
         elif choice == 4:
             user_submenu(username)
+        else:
+            click.echo("Please select a valid option.")
 
 def print_exercises_menu(username, workout_date):
     click.echo(f"Exercises for {username} on {workout_date}:")
