@@ -293,6 +293,7 @@ def delete_workouts_submenu(username):
             if confirmed:
                 tracker.delete_workout(workout_id)
                 click.echo(f"Workout: {workout_to_delete[1]} - {workout_to_delete[2]} has been deleted.")
+                input("Press Enter to continue...")
                 break
             else:
                 click.echo("Deletion was cancelled.")
