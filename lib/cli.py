@@ -186,7 +186,7 @@ def select_workout_date(username):
         user_submenu(username)
         return
     
-    click.echo("Select a workout date:")
+    click.echo("Select a workout:")
     click.echo()
     for idx, workout in enumerate(workouts, start=1):
         click.echo(f"{idx}. Workout on {workout[1]} for {workout[2]}")
