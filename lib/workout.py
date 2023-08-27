@@ -17,7 +17,6 @@ class Workout:
 
     def add_workout(self, username, date, time):
         user_id = self.user.get_user_id(username)
-        print(f"Adding workout for user_id: {user_id}, date: {date}, time: {time}")
         with self.conn:
             self.conn.execute(
                 'INSERT INTO workouts (user_id, date, time) VALUES (?, ?, ?)',
