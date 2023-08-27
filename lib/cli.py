@@ -435,7 +435,9 @@ def delete_exercise_menu(username, workout_date):
     for idx, exercise in enumerate(exercises, start=1):
         click.echo(f"{idx}. {exercise['name']} - Sets: {exercise['sets']}, Reps: {exercise['reps']}, Weight: {exercise['weight']}")
 
+    click.echo()
     choice = click.prompt("Enter the number of the exercise you wish to delete (Enter '0' to cancel)", type=int)
+    click.echo()
 
     if choice == 0:
         click.echo("Exercise deletion cancelled.")
