@@ -150,7 +150,7 @@ def add_workout_submenu(username):
             user_submenu(username)
             break
         
-        time = click.prompt("Enter workout time (HH:MM) or '0' to cancel")
+        time = click.prompt("Enter workout length (HH:MM) or '0' to cancel")
         print(f"Collected time: {time}")
 
         if time == '0':
@@ -183,7 +183,7 @@ def select_workout_date(username):
     workouts = tracker.list_workouts(username)
 
     if not workouts:
-        click.echo(f"No workout dates available for {username}.")
+        click.echo(f"No workouts found for {username}.")
         input("Press Enter to continue...")
         user_submenu(username)
         return
@@ -281,8 +281,9 @@ def delete_workouts_submenu(username):
         workouts = tracker.list_workouts(username)
 
         if not workouts:
-            click.echo("No workouts available.")
-            return
+            click.echo(f"No workouts found for {username}.")
+            input("Press Enter to continue...")
+            user_submenu(username)
     
         click.echo(f"Workouts for {username}:")
         click.echo()
@@ -320,12 +321,16 @@ def delete_user_submenu(username):
     if confirmed:
         tracker.delete_user(username)
         click.echo(f"'{username}' has been deleted.")
+        input("Press Enter to continue...")
+        main()
 
     else:
         click.echo("Deletion was cancelled.")
+        input("Press Enter to continue...")
+        user_submenu(username)
+        
     
-    input("Press Enter to continue...")
-    main()
+
 
 def exercises_menu(username, workout_date, exercise_names):
     clear_console()
