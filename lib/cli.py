@@ -193,7 +193,7 @@ def select_workout_date(username):
         workout_date = selected_workout[1]
         exercises_menu(username, workout_date)
     else:
-        click.echo("Invalid input.")
+        click.echo("Please select a valid option.")
         input("Press Enter to continue...")
         select_workout_date(username)
 
