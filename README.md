@@ -40,7 +40,7 @@ workout or making it entirely with a pre-made list of exercises. This function w
 provides a very user-friendly interface for the user to design their workout and
 document what they will be doing for a certain day.
 
-- The rest of the functions in this CLI has a much less impact than the ones listed
+- The rest of the functions in this CLI have a much less impact than the ones listed
 above. There is a large variety of functions that will handle basic tasks like
 recording the user, listing available profiles, deleting profiles, deleting
 exercises, etc.
