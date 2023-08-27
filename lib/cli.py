@@ -129,7 +129,7 @@ def print_user_submenu(username):
     click.echo(f"Welcome, {username}.")
     click.echo()
     click.echo("1. Add Workout")
-    click.echo("2. View Workouts")
+    click.echo("2. View Workout Details")
     click.echo("3. Select Workout")
     click.echo("4. Delete Workout")
     click.echo("5. Delete Profile")
