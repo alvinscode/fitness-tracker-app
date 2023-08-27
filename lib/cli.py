@@ -284,7 +284,7 @@ def delete_workouts_submenu(username):
         click.echo(f"Workouts for {username}:")
         click.echo()
         for idx, workout in enumerate(workouts, start=1):
-            click.echo(f"{idx}. Date: {workout[1]} | Total Workout Time: {workout[2]}")
+            click.echo(f"{idx}. Date: {workout[1]} | Workout Time: {workout[2]}")
         
         click.echo()
         choice = click.prompt("Select a workout to delete (Enter '0' to cancel deletion)", type=int)
