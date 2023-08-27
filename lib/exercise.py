@@ -37,3 +37,26 @@ class Exercise:
         self.cursor.execute(query, (exercise_id,))
         exercise = self.cursor.fetchone()
         return exercise
+    
+    def get_all_exercises_for_workout(self, workout_id):
+        query = "SELECT * FROM exercises WHERE workout_id = ?"
+        result = self.conn.execute(query, (workout_id,)).fetchall()
+    
+        exercises = []
+        for row in result:
+            exercise = {
+                "id": row[0],
+                "workout_id": row[1],
+                "name": row[2],
+                "sets": row[3],
+                "reps": row[4],
+                "weight": row[5]
+            }
+            exercises.append(exercise)
+    
+        return exercises
+
+    def delete_exercise_by_id(self, exercise_id):
+        query = "DELETE FROM exercises WHERE id = ?"
+        self.conn.execute(query, (exercise_id,))
+        self.conn.commit()

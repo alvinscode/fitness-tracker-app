@@ -274,6 +274,8 @@ def exercises_menu(username, workout_date):
         elif choice == 2:
             view_exercises(username, workout_date)
         elif choice == 3:
+            delete_exercise_menu(username, workout_date)
+        elif choice == 4:
             user_submenu(username)
 
 def print_exercises_menu(username, workout_date):
@@ -281,7 +283,8 @@ def print_exercises_menu(username, workout_date):
     click.echo()
     click.echo("1. Add Exercise")
     click.echo("2. View Exercises")
-    click.echo("3. Go Back")
+    click.echo("3. Delete Exercise")
+    click.echo("4. Go Back")
     click.echo()
 
 def add_exercise_submenu(username, workout_date):
@@ -337,6 +340,55 @@ def view_exercises(username, workout_date):
         click.echo("No exercises found for this workout.")
 
     click.echo()
+    input("Press Enter to continue...")
+    exercises_menu(username, workout_date)
+
+def delete_exercise_menu(username, workout_date):
+    clear_console()
+
+    workouttracker = Workout(db)
+    exercisetracker = Exercise(db)
+    workout_id = workouttracker.get_workout_id(username, workout_date)
+
+    if workout_id is None:
+        click.echo(f"No workout found for {username} on {workout_date}.")
+        input("Press Enter to continue...")
+        exercises_menu(username, workout_date)
+        return
+
+    exercises = exercisetracker.get_all_exercises_for_workout(workout_id)
+
+    if not exercises:
+        click.echo("No exercises available to delete.")
+        input("Press Enter to continue...")
+        exercises_menu(username, workout_date)
+        return
+
+    click.echo("Select an exercise to delete:")
+    click.echo()
+    for idx, exercise in enumerate(exercises, start=1):
+        click.echo(f"{idx}. {exercise['name']} - Sets: {exercise['sets']}, Reps: {exercise['reps']}, Weight: {exercise['weight']}")
+
+    choice = click.prompt("Enter the number of the exercise you wish to delete (Enter '0' to cancel)", type=int)
+
+    if choice == 0:
+        click.echo("Exercise deletion cancelled.")
+    elif 1 <= choice <= len(exercises):
+        exercise_to_delete = exercises[choice - 1]
+        exercise_id = exercise_to_delete['id']
+
+        confirmed = click.confirm(f"Are you sure you want to delete this exercise: '{exercise_to_delete['name']}'?")
+
+        if confirmed:
+            exercisetracker.delete_exercise_by_id(exercise_id)
+            click.echo(f"Exercise '{exercise_to_delete['name']}' has been deleted.")
+        else:
+            click.echo("Exercise deletion was cancelled.")
+            
+        exercisetracker.conn.close()
+    else:
+        click.echo("Invalid input.")
+
     input("Press Enter to continue...")
     exercises_menu(username, workout_date)
 
