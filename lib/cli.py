@@ -8,6 +8,8 @@ from exercise import Exercise
 
 db = 'db/fitness_tracker.db'
 
+exercise_names = ["Bench Press", "Bicep Curls", "Cable Chest Fly", "Dumbbell Overhead Extension", "Incline Bench Press", "Pull Ups", "Face Pulls", "Crunches", "Russian Twists", "Leg Raise + Toe Touch", "Reach Thru Crunches", "L-Sit Toe Touches", "Oblique Heel Taps", "Russian Twists", "Mountain Climbers"]
+
 def clear_console():
     system = platform.system()
     if system == "Windows":
@@ -201,7 +203,8 @@ def select_workout_date(username):
     elif 1 <= choice <= len(workouts):
         selected_workout = workouts[choice - 1]
         workout_date = selected_workout[1]
-        exercises_menu(username, workout_date)
+
+        exercises_menu(username, workout_date, exercise_names)
     else:
         click.echo("Please select a valid option.")
         input("Press Enter to continue...")
@@ -324,7 +327,7 @@ def delete_user_submenu(username):
     input("Press Enter to continue...")
     main()
 
-def exercises_menu(username, workout_date):
+def exercises_menu(username, workout_date, exercise_names):
     clear_console()
     print_exercises_menu(username, workout_date)
 
@@ -332,7 +335,7 @@ def exercises_menu(username, workout_date):
         choice = click.prompt("Select an option", type=int)
     
         if choice == 1:
-            add_exercise_submenu(username, workout_date)
+            add_exercise_submenu(username, workout_date, exercise_names)
             break
         elif choice == 2:
             view_exercises(username, workout_date)
@@ -356,7 +359,7 @@ def print_exercises_menu(username, workout_date):
     click.echo("4. Go Back")
     click.echo()
 
-def add_exercise_submenu(username, workout_date):
+def add_exercise_submenu(username, workout_date, exercise_names):
     clear_console()
 
     tracker = Workout(db)
@@ -366,30 +369,45 @@ def add_exercise_submenu(username, workout_date):
         click.echo(f"No workout found for {username} on {workout_date}.")
     else:
         click.echo(f"Adding exercise for {username} on {workout_date}")
-        exercise_name = click.prompt("Enter exercise name (Enter 'back' to go back)")
+        click.echo("Available exercise names:")
+        for idx, name in enumerate(exercise_names, start=1):
+            click.echo(f"{idx}. {name}")
 
-        if exercise_name.lower() == 'back':
-            exercises_menu(username, workout_date)
+        exercise_name_idx = click.prompt("Enter the number of the exercise name (Enter 'back' to go back or 'custom' to enter a custom exercise)", type=str)
+
+        if exercise_name_idx.lower() == 'back':
+            exercises_menu(username, workout_date, exercise_names)
             return
+        elif exercise_name_idx.lower() == 'custom':
+            exercise_name = click.prompt("Enter custom exercise name")
+        else:
+            exercise_name_idx = int(exercise_name_idx)
+            if 1 <= exercise_name_idx <= len(exercise_names):
+                exercise_name = exercise_names[exercise_name_idx - 1]
+            else:
+                click.echo("Invalid exercise name number.")
+                input("Press Enter to continue...")
+                add_exercise_submenu(username, workout_date, exercise_names)
+                return
 
         sets = click.prompt("Enter number of sets (Enter '-1' to go back)", type=int)
         if sets == -1:
-            exercises_menu(username, workout_date)
+            exercises_menu(username, workout_date, exercise_names)
 
         reps = click.prompt("Enter number of reps (Enter '-1' to go back)", type=int)
         if reps == -1:
-            exercise_name(username, workout_date)
+            exercise_name(username, workout_date, exercise_names)
 
         weight = click.prompt("Enter weight (Enter '-1' to go back)", type=int)
         if weight == -1:
-            exercise_name(username, workout_date)
+            exercise_name(username, workout_date, exercise_names)
 
         exercise_tracker = Exercise(db)
         exercise_tracker.add_exercise(workout_id, exercise_name, sets, reps, weight)
 
         click.echo("Exercise added successfully.")
         input("Press Enter to continue...")
-        exercises_menu(username, workout_date)
+        exercises_menu(username, workout_date, exercise_names)
 
 def view_exercises(username, workout_date):
     clear_console()
@@ -418,7 +436,7 @@ def view_exercises(username, workout_date):
 
     click.echo()
     input("Press Enter to continue...")
-    exercises_menu(username, workout_date)
+    exercises_menu(username, workout_date, exercise_names)
 
 def delete_exercise_menu(username, workout_date):
     clear_console()
