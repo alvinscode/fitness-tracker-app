@@ -61,8 +61,8 @@ ultimately linked to the user.
 
 To use the CLI, navigate to the project directory, then run these commands:
 
-```pipenv install```
-```cd lib```
+```pipenv install``` <br>
+```cd lib``` <br>
 ```python cli.py```
 
 ## Dependencies
