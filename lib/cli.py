@@ -251,7 +251,7 @@ def list_workouts_submenu(username):
 
                     if idx > 0 and last_day_total_reps is not None:
                         daily_reps_improvement = ((total_reps - last_day_total_reps) / last_day_total_reps) * 100
-                        click.echo(f"Daily Reps Improvement: {daily_reps_improvement:.2f}%")
+                        click.echo(f"Daily Rep Improvement: {daily_reps_improvement:.2f}%")
 
                     if idx > 0 and last_day_total_weight is not None and last_day_total_weight != 0:
                         daily_weight_improvement = ((total_weight - last_day_total_weight) / last_day_total_weight) * 100
