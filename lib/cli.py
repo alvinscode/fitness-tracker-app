@@ -271,6 +271,7 @@ def list_workouts_submenu(username):
     user_submenu(username)
 
 def delete_workouts_submenu(username):
+    clear_console()
     tracker = Workout(db)
 
     while True:
@@ -280,10 +281,12 @@ def delete_workouts_submenu(username):
             click.echo("No workouts available.")
             return
     
-        click.echo("Workouts:")
+        click.echo(f"Workouts for {username}:")
+        click.echo()
         for idx, workout in enumerate(workouts, start=1):
             click.echo(f"{idx}. Date: {workout[1]} | Total Workout Time: {workout[2]}")
-
+        
+        click.echo()
         choice = click.prompt("Select a workout to delete (Enter '0' to cancel deletion)", type=int)
         if choice == 0:
             click.echo("Deletion was cancelled.")
@@ -341,6 +344,10 @@ def exercises_menu(username, workout_date):
             click.echo("Please select a valid option.")
 
 def print_exercises_menu(username, workout_date):
+    with open("menu.txt", "r") as menu_file:
+        menu_content = menu_file.read()
+        click.echo(menu_content)
+    click.echo()
     click.echo(f"Would you like to add or change exercises to your workout on {workout_date}, {username}?:")
     click.echo()
     click.echo("1. Add Exercise")
